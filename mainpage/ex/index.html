@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>메인페이지</title>
     <link rel="stylesheet" href="main.css" />
-    <script src="index.js" defer></script>
+    <!-- <script src="./obServer.js" defer></script> -->
   </head>
   <body>
     <header>
@@ -78,11 +78,17 @@
         <input type="radio" name="tabmenu" id="tab04" />
         <label for="tab04">친목수다</label>
 
-        <div class="room-container con1">
-          <a class="room mm"></a>
-        </div>  
+        <div class="room-container con1" id="roomShower">
+          <a href="../room/?roomId=1" class="room"><div class="title">콜로세움에 어서오세요!!</div><div class="tag">찬반토론</div></a>
+        </div>
+
+        </div> 
         </div>
       </div>
     </div>
+
+    <script src="./obServer.js"></script>
+
+    <!-- <script src="./clicker.js"></script> -->
   </body>
 </html>
