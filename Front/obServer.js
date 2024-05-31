@@ -222,7 +222,22 @@ const loadNewRoom = (data) => {
   if (tag == "2") tagName = "정보공유";
   if (tag == "3") tagName = "친목수다";
 
-  const room = `<a href="../room/?roomId=${roomId}" class="room"><div class="title">${title}</div><div class="tag">${tagName}</div></a>`;
+  const room = `
+  <div class="box">
+    <div class="room">
+      <div class="title">
+        방제 : ${title}
+      </div>
+      <div>
+        <div class="bgi"></div>
+        <div class="status">
+          <div class="tag"># ${tagName}</div>
+          <div class="host">닉네임:경일게임아카데미</div>
+          <button class="enter">입장하기</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
 
   roomContainer.innerHTML += room;
 };
