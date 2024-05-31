@@ -37,6 +37,17 @@ const makeElem = document.getElementById("makeBtn");
   }
   if (user.user) {
     makeElem.innerHTML = `
-    <input type="submit" class="makeBtn" value="채팅방 생성"/>`;
+    <input type="submit" id="makeBtn" class="makeBtn" value="채팅방 생성"/>`;
   }
+
+  const btn = document.getElementById("makeBtn");
+
+  btn.onclick = () => {
+    const roomEle = document.getElementsByClassName("body")[0];
+    if (roomEle.style.display != "flex") {
+      roomEle.style.display = "flex";
+    } else {
+      roomEle.style.display = "none";
+    }
+  };
 })();

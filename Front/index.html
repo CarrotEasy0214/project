@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>메인페이지</title>
     <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="./makeroom.css" />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- <script src="./obServer.js" defer></script> -->
   </head>
@@ -38,6 +39,7 @@
         </ul>
       </nav>
     </header>
+
     <div class="container">
       <div id="search">
         <form class="box" action="">
@@ -96,8 +98,29 @@
       </div>
     </div>
 
+    <!-- 룸 만들기 -->
+    <div class="body">
+      <div class="list-box">
+        <form action="" class="write">
+          <h3>게시글 작성</h3>
+          <select name="category" id="category"></select>
+          <input
+            type="text"
+            name="title"
+            placeholder="방 제목을 입력해주세요."
+          />
+
+          <div class="icons"></div>
+          <div class="btns">
+            <button id="cancle" class="cancle">취소</button>
+            <button id="submit" class="submit">작성 완료</button>
+          </div>
+        </form>
+      </div>
+    </div>
     <script src="./obServer.js"></script>
     <script src="./index.js"></script>
+    <script src="./makeroom.js"></script>
 
     <!-- <script src="./clicker.js"></script> -->
   </body>
