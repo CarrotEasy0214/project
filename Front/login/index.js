@@ -1,3 +1,19 @@
+(async () => {
+  try {
+    const check = await axios.post(
+      "http://localhost:8080/cookieCheck",
+      {},
+      { withCredentials: true }
+    );
+
+    console.log("check", check.data);
+
+    if (check.data.user != undefined) {
+      location.href = "/";
+    }
+  } catch (err) {}
+})();
+
 const form = document.forms.login;
 const emailCheckElem = document.getElementById("email");
 const pwCheckElem = document.getElementById("pw");
@@ -38,7 +54,7 @@ form.onsubmit = async (e) => {
   try {
     const user = (
       await axios.post(
-        "http://localhost:3000/user/login", // url
+        "http://localhost:8080/login", // url
         { email: form.email.value, pw: form.pw.value }, // body
         {
           // options
@@ -46,7 +62,12 @@ form.onsubmit = async (e) => {
         }
       )
     ).data;
+
     console.log(user);
+
+    if (user.redirect) location.href = user.redirect;
+    if (user.error) console.error("error : ", user.error);
+    if (user.result) console.log("result : ", user.result);
   } catch (err) {
     console.error(err);
   }

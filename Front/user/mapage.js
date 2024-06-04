@@ -4,7 +4,15 @@ hamburger.onclick = function () {
   navBar.classList.toggle("active");
 };
 
-function setupTabs() {
+const dataChecker = (data) => {
+  console.log(data);
+  if (data.data.redirect) location.href = data.data.redirect;
+  if (data.data.error) console.error("error : ", data.data.error);
+  if (data.data.result) console.log("result : ", data.data.result);
+};
+
+//탭 셋업
+const setupTabs = () => {
   document.querySelectorAll(".tabs__button").forEach((button) => {
     button.addEventListener("click", () => {
       const sideBar = button.parentElement;
@@ -26,8 +34,9 @@ function setupTabs() {
       tabToActivate.classList.add("tabs__content--active");
     });
   });
-}
+};
 
+//탭 클릭 이벤트 셋업
 document.addEventListener("DOMContentLoaded", () => {
   setupTabs();
 
@@ -36,11 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+//유저 navbar
 const userinfoElem = document.getElementById("user-info");
 (async () => {
   const user = (
     await axios.post(
-      "http://localhost:3000/user/info", //url
+      "http://localhost:8080/user/info", //url
       {}, //body
       {
         //options
@@ -49,112 +59,26 @@ const userinfoElem = document.getElementById("user-info");
     )
   ).data;
 
-  console.log(user.user);
+  // console.log(user.user);
   if (user.user) {
     userinfoElem.innerHTML = `<ul>
     <li>
-      <a href="./index.html" class="">홈</a>
+      <a href="/" class="">메인 페이지</a>
     </li>
     <li>
-      <a href="" class="">고객지원</a>
+        <a href="./" class="">${user.user}</a>
     </li>
     <li>
-      <a href="" class="">Contact Us</a>
-    </li>
-    <li>
-      <a href="" class="">마이페이지</a>
-    </li>
-    <li>
-        <a href="" class="">${user.user}</a>
-    </li>
-    <li>
-      <a href="#" class="">로그아웃</a>
+      <a href="/logout" class="">로그아웃</a>
     </li>
   </ul>`;
   }
 })();
 
-const observer = new IntersectionObserver(() => {}, {
-  threshold: 0.3,
-});
-
-let lastroom;
-let tagValueForServer = 0;
-
-const lastroomObserver = new IntersectionObserver(async (entries) => {
-  lastroom = entries[0];
-  if (!lastroom.isIntersecting) return;
-  roomData.forEach(() => {
-    loadNewRoom(roomData[0]);
-
-    roomData.splice(0, 1);
-    console.log(roomData[0] == undefined);
-  });
-
-  lastroomObserver.unobserve(lastroom.target);
-  // console.log(lastroom.target, roomData);
-  lastroomObserver.observe(document.querySelector(".room:last-child"));
-}, {});
-
-// let roomData = axios
-let roomData = [
-  { roomId: 1, title: "HI32", tag: 1 },
-  { roomId: 2, title: "HI34", tag: 2 },
-  { roomId: 3, title: "HI35", tag: 3 },
-  { roomId: 3, title: "HI35", tag: 3 },
-  { roomId: 3, title: "HI35", tag: 3 },
-];
-
-let replyData = [
-  { recommentId: 1, reply: "쫄?", tag: 1 },
-  { recommentId: 2, reply: "쫄?1", tag: 2 },
-  { recommentId: 3, reply: "쫄?2", tag: 3 },
-  { recommentId: 3, reply: "쫄?3", tag: 3 },
-  { recommentId: 3, reply: "쫄?4", tag: 3 },
-];
-
-//클릭 이벤트
-const tab = document.getElementById("tab1");
-
-tab.onclick = (e) => {
-  tagValueForServer = 0;
-  if (roomData[0] == undefined) {
-    roomData = [
-      { roomId: 1, title: "HI32", tag: 1 },
-      { roomId: 2, title: "HI34", tag: 2 },
-      { roomId: 3, title: "HI35", tag: 3 },
-    ];
-  }
-
-  console.log("전체 태그 클릭", e);
-
-  const roombox = document.getElementById("roomShower");
-
-  lastroomObserver.unobserve(lastroom.target);
-
-  while (roombox.children[1]) {
-    roombox.removeChild(roombox.lastChild);
-  }
-
-  lastroomObserver.observe(document.querySelector(".room:last-child"));
-
-  rooms.forEach((room) => {
-    observer.observe(room);
-  });
-};
-
-const rooms = document.querySelectorAll(".room");
-
-lastroomObserver.observe(document.querySelector(".room:last-child"));
-
-rooms.forEach((room) => {
-  observer.observe(room);
-});
-
-const roomContainer = document.querySelector(".room-container");
-
+//룸 만들기 펑션
 const loadNewRoom = (data) => {
-  const { roomId, title, tag } = data;
+  const { id, title, tag } = data;
+  // console.log(data);
 
   let tagName;
 
@@ -162,7 +86,7 @@ const loadNewRoom = (data) => {
   if (tag == "2") tagName = "정보공유";
   if (tag == "3") tagName = "친목수다";
 
-  const room = `
+  const room = ` <form class="room">
   <div class="box">
     <div class="room">
       <div class="title">
@@ -171,14 +95,170 @@ const loadNewRoom = (data) => {
       <div>
         <div class="bgi"></div>
         <div class="status">
+        <div class="roomIdElem" style="display:none">${id}</div>
           <div class="tag"># ${tagName}</div>
-          <div class="host">닉네임:경일게임아카데미</div>
-          <button class="enter">입장하기</button>
+          <div class="host">태그 (업데이트 예정)</div>
+
+          <a href="/room/?roomId=${id}"><button type="button" class="enter">입장하기</button></a>
           <button class="delete">삭제하기</button>
         </div>
       </div>
     </div>
-  </div>`;
+  </div></form>`;
 
+  const roomContainer = document.getElementById("tab1");
   roomContainer.innerHTML += room;
 };
+
+//내 방
+(async () => {
+  let roomData = await (
+    await axios.post(
+      "http://localhost:8080/user/get/rooms",
+      {},
+      { withCredentials: true }
+    )
+  ).data.Rooms;
+
+  roomData.forEach((e) => {
+    loadNewRoom(e);
+  });
+
+  //쓴 댓글
+  let recomment = await (
+    await axios.post(
+      "http://localhost:8080/user/get/recomments",
+      {},
+      { withCredentials: true }
+    )
+  ).data.data;
+
+  // console.log(recomment);
+
+  const recommentElem = document.getElementById("commentTap");
+
+  // console.log(recommentElem);
+  for (const { _id, content, chatId } of recomment) {
+    // console.log("실횅");
+    const recomment2 = `<form class="recomment">
+    <div class="list_container">
+        내용 : ${content}
+
+          <a href="/chat/?chatId=${chatId}"><button type="button" class="enter">입장하기</button></a>
+          <button class="delete">삭제하기</button>
+      
+      </div>
+    <div id="recommentIdElem" style="display:none">${_id}</div>
+  </form>`;
+
+    recommentElem.innerHTML += recomment2;
+  }
+
+  const everyForms = [...document.forms];
+
+  //form 처리
+  everyForms.forEach((element) => {
+    const deleteBtn = [...element][1];
+
+    deleteBtn.onclick = async (e) => {
+      e.preventDefault();
+
+      //룸 삭제
+      if (element.classList[0] == "room") {
+        const roomId =
+          element.children[0].children[0].children[1].children[1].children[0]
+            .innerText;
+
+        console.log(roomId);
+        const data = await axios.post(
+          `http://localhost:8080/user/delete/room`,
+          { roomId: +roomId },
+          {
+            withCredentials: true,
+          }
+        );
+        console.log(data.data.data);
+        dataChecker(data);
+      }
+
+      //댓글 삭제
+      if (element.classList[0] == "recomment") {
+        console.log("rec");
+
+        const recommentId = element.children[1].innerText;
+
+        //댓글 삭제
+        const data = await axios.post(
+          `http://localhost:8080/user/delete/recomment`,
+          { recommentId: recommentId },
+          {
+            withCredentials: true,
+          }
+        );
+
+        dataChecker(data);
+      }
+    };
+  });
+
+  //닉변
+  const nickBtn = document.getElementById("nickBtn");
+  nickBtn.onclick = async (e) => {
+    e.preventDefault();
+
+    const nick = document.getElementById("nickInput").value;
+
+    if (nick != "") {
+      const data = await axios.post(
+        `http://localhost:8080/user/set/name`,
+        { name: nick },
+        {
+          withCredentials: true,
+        }
+      );
+      dataChecker(data);
+    } else {
+      return;
+    }
+  };
+
+  //비밀번호 변경
+
+  //닉변
+  const pwBtn = document.getElementById("pwBtn");
+  pwBtn.onclick = async (e) => {
+    e.preventDefault();
+
+    const pw = document.getElementById("pwInput").value;
+
+    if (pw != "") {
+      const data = await axios.post(
+        `http://localhost:8080/user/set/pw`,
+        { pw: pw },
+        {
+          withCredentials: true,
+        }
+      );
+      dataChecker(data);
+    } else {
+      return;
+    }
+  };
+
+  const killBtn = document.getElementById("killBtn");
+
+  killBtn.onclick = async (e) => {
+    e.preventDefault();
+    console.log("hi");
+
+    //회원탈퇴
+    const data = await axios.post(
+      `http://localhost:8080/user/kill`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    dataChecker(data);
+  };
+})();

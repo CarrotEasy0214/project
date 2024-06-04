@@ -1,4 +1,7 @@
 node_modules
+node_modules/name
 .DS_Store
+.gitignore
 .env
-uploads
+../.DS_Store
+../.gitignore

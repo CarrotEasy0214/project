@@ -11,10 +11,6 @@ let isEmail = false,
   isNick = true;
 
 registForm.email.oninput = (e) => {
-  // [a-z0-9]+@[a-z]+\.[a-z]{2,3}
-  // ^[A-z0-9]{2,20}+@[A-z]{2,20}+\.[a-z]{2,3}$
-  // ^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$
-
   const emailReg = /^[A-z0-9가-힣]+@[A-z]+\.[a-z]{2,3}$/;
   if (!emailReg.test(e.target.value)) {
     emailResultElem.innerHTML = "이메일 형식을 지켜주세요.";
@@ -55,38 +51,48 @@ registForm["pw-check"].oninput = (e) => {
 };
 
 // form에서의 요청 보내기 == submit
-registForm.onsubmit = (e) => {
-  e.preventDefault(); // 엘리먼트의 기본 기능을 멈춘다.
+registForm.onsubmit = async (e) => {
+  try {
+    e.preventDefault();
 
-  if (!(isEmail && isPw && isCheck && isNick)) {
-    alert("내용 확인 후 다시 시도해주세요.");
-    return;
-  }
-
-  const xhr = new XMLHttpRequest();
-  xhr.open("post", "http://localhost:3000/user/regist");
-  xhr.setRequestHeader("content-type", "application/json");
-  xhr.send(
-    JSON.stringify({
-      email: registForm.email.value,
-      pw: registForm.pw.value,
-      "pw-check": registForm["pw-check"].value,
-      nick: registForm.nick.value,
-    })
-  );
-
-  xhr.onload = () => {
-    if (xhr.status == 200) {
-      alert("성공!");
-      location.href = "../login/login.html";
-    } else if (xhr.status == 400) {
-      alert("비밀번호 확인해!");
-      // 권한 문제로 거절
-    } else if (xhr.status == 409) {
-      alert("중복됐어");
-      // 기존 서버 정보와 충돌
-    } else {
-      alert("알 수 없는 오류 발생");
+    if (!(isEmail && isPw && isCheck && isNick)) {
+      alert("내용 확인 후 다시 시도해주세요.");
+      return;
     }
-  };
+
+    const data = await axios.post(
+      `http://localhost:8080/regist`,
+      {
+        email: registForm.email.value,
+        pw: registForm.pw.value,
+        pwCk: registForm["pw-check"].value,
+        name: registForm.nick.value,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (data.data.redirect) location.href = data.data.redirect;
+    if (data.data.error) console.error("error : ", data.data.error);
+    if (data.data.result) console.log("result : ", data.data.result);
+  } catch (err) {
+    console.log(err);
+  }
 };
+
+// xhr.onload = () => {
+//   if (xhr.status == 200) {
+//     alert("성공!");
+//     location.href = "/login";
+//   } else if (xhr.status == 400) {
+//     alert("비밀번호 확인해!");
+//     // 권한 문제로 거절
+//   } else if (xhr.status == 409) {
+//     alert("중복됐어");
+//     // 기존 서버 정보와 충돌
+//   } else {
+//     alert("알 수 없는 오류 발생");
+//   }
+// };
+// };
