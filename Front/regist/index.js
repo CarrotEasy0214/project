@@ -61,7 +61,7 @@ registForm.onsubmit = async (e) => {
     }
 
     const data = await axios.post(
-      `http://localhost:8080/regist`,
+      `/api/regist`,
       {
         email: registForm.email.value,
         pw: registForm.pw.value,

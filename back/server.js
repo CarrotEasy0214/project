@@ -36,7 +36,7 @@ app.use(cookieParser("Oniri1Making"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(router);
+app.use("/api", router);
 
 const resetMysql = process.env.RESET == "true";
 

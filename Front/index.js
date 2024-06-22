@@ -3,7 +3,7 @@ const makeElem = document.getElementById("makeBtn");
 (async () => {
   const user = await (
     await axios.post(
-      "http://localhost:8080/user/info", //url
+      "/api/user/info", //url
       {}, //body
       {
         //options

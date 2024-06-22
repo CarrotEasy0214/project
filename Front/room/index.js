@@ -5,7 +5,7 @@
     //소켓용 쿠키
     const userName = await (
       await axios.post(
-        `http://localhost:8080/cookieCheck`,
+        `/api/cookieCheck`,
         {},
         {
           withCredentials: true,
@@ -21,7 +21,7 @@
 
     const roomData = await (
       await axios.post(
-        `http://localhost:8080/room/${roomIdStr}`,
+        `/api/room/${roomIdStr}`,
         {},
         {
           withCredentials: true,
@@ -44,7 +44,7 @@
     //소켓 통신
     let time = Date.now();
 
-    const socket = io(`http://localhost:8080/room${roomIdStr}`, {}); // chat 네임스페이스
+    const socket = io(`/api/room${roomIdStr}`, {}); // chat 네임스페이스
 
     //보낼 때
     document.getElementById("sendBtn").onclick = async (e) => {
@@ -59,7 +59,7 @@
       formData.append("img", form.imgInputer.files[0]);
 
       const imgName = await (
-        await axios.post(`http://localhost:8080/img`, formData, {
+        await axios.post(`/api/img`, formData, {
           withCredentials: true,
           headers: { "Content-type": "multipart/form-data" },
         })

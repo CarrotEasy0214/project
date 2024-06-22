@@ -1,7 +1,7 @@
 (async () => {
   try {
     const check = await axios.post(
-      "http://localhost:8080/cookieCheck",
+      "/api/cookieCheck",
       {},
       { withCredentials: true }
     );
@@ -54,7 +54,7 @@ form.onsubmit = async (e) => {
   try {
     const user = (
       await axios.post(
-        "http://localhost:8080/login", // url
+        "/api/login", // url
         { email: form.email.value, pw: form.pw.value }, // body
         {
           // options

@@ -1,7 +1,7 @@
 (async () => {
   try {
     const check = await axios.post(
-      "http://localhost:8080/cookieCheck",
+      "/api/cookieCheck",
       {},
       { withCredentials: true }
     );

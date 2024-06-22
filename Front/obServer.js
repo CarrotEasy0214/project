@@ -12,7 +12,7 @@
     //하이라이트 룸
     let highLightRoom = await (
       await axios.post(
-        "http://localhost:8080/api/highLight/rooms", //url
+        "/api/api/highLight/rooms", //url
         {}, //body
         {
           //options
@@ -25,7 +25,7 @@
     //하이라이트 댓글
     let highLightChat = await (
       await axios.post(
-        "http://localhost:8080/api/highLight/recomments",
+        "/api/api/highLight/recomments",
         {},
         { withCredentials: true }
       )
@@ -40,7 +40,7 @@
         if (roomData[0] == undefined) {
           roomData = await (
             await axios.post(
-              "http://localhost:8080/api/room/ran",
+              "/api/api/room/ran",
               { roomValue: roomValue, tag: tagValueForServer },
               { withCredentials: true }
             )
@@ -147,7 +147,7 @@
         if (searchValue != "") {
           let searchArr = await (
             await axios.post(
-              "http://localhost:8080/api/room/search", //url
+              "/api/api/room/search", //url
               { title: searchValue }, //body
               {
                 //options
@@ -179,7 +179,7 @@
 
         if (roomTag != 0 || roomTitle != "") {
           const data = await axios.post(
-            "http://localhost:8080/api/room/make",
+            "/api/api/room/make",
             { title: roomTitle, tag: roomTag },
             { withCredentials: true }
           );

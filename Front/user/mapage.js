@@ -50,7 +50,7 @@ const userinfoElem = document.getElementById("user-info");
 (async () => {
   const user = (
     await axios.post(
-      "http://localhost:8080/user/info", //url
+      "/api/user/info", //url
       {}, //body
       {
         //options
@@ -113,11 +113,7 @@ const loadNewRoom = (data) => {
 //내 방
 (async () => {
   let roomData = await (
-    await axios.post(
-      "http://localhost:8080/user/get/rooms",
-      {},
-      { withCredentials: true }
-    )
+    await axios.post("/api/user/get/rooms", {}, { withCredentials: true })
   ).data.Rooms;
 
   roomData.forEach((e) => {
@@ -126,11 +122,7 @@ const loadNewRoom = (data) => {
 
   //쓴 댓글
   let recomment = await (
-    await axios.post(
-      "http://localhost:8080/user/get/recomments",
-      {},
-      { withCredentials: true }
-    )
+    await axios.post("/api/user/get/recomments", {}, { withCredentials: true })
   ).data.data;
 
   // console.log(recomment);
@@ -171,7 +163,7 @@ const loadNewRoom = (data) => {
 
         console.log(roomId);
         const data = await axios.post(
-          `http://localhost:8080/user/delete/room`,
+          `/api/user/delete/room`,
           { roomId: +roomId },
           {
             withCredentials: true,
@@ -189,7 +181,7 @@ const loadNewRoom = (data) => {
 
         //댓글 삭제
         const data = await axios.post(
-          `http://localhost:8080/user/delete/recomment`,
+          `/api/user/delete/recomment`,
           { recommentId: recommentId },
           {
             withCredentials: true,
@@ -210,7 +202,7 @@ const loadNewRoom = (data) => {
 
     if (nick != "") {
       const data = await axios.post(
-        `http://localhost:8080/user/set/name`,
+        `/api/user/set/name`,
         { name: nick },
         {
           withCredentials: true,
@@ -233,7 +225,7 @@ const loadNewRoom = (data) => {
 
     if (pw != "") {
       const data = await axios.post(
-        `http://localhost:8080/user/set/pw`,
+        `/api/user/set/pw`,
         { pw: pw },
         {
           withCredentials: true,
@@ -253,7 +245,7 @@ const loadNewRoom = (data) => {
 
     //회원탈퇴
     const data = await axios.post(
-      `http://localhost:8080/user/kill`,
+      `/api/user/kill`,
       {},
       {
         withCredentials: true,

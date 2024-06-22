@@ -1,7 +1,7 @@
 (async () => {
   try {
     const check = await axios.post(
-      "http://localhost:8080/cookieCheck",
+      "/api/cookieCheck",
       {},
       { withCredentials: true }
     );
@@ -19,7 +19,7 @@ const sendBtn = send.fight;
 
     const contents = await (
       await axios.post(
-        `http://localhost:8080/chat/get/contents`,
+        `/api/chat/get/contents`,
         { chatId: chatId },
         {
           withCredentials: true,
@@ -42,7 +42,7 @@ const sendBtn = send.fight;
     //댓글
     const commentList = await (
       await axios.post(
-        `http://localhost:8080/chat/get/recomments`,
+        `/api/chat/get/recomments`,
         { chatId: chatId },
         {
           withCredentials: true,
@@ -98,7 +98,7 @@ sendBtn.onclick = async (e) => {
       console.log("val");
 
       const data = await axios.post(
-        "http://localhost:8080/chat/reply", //url
+        "/api/chat/reply", //url
         { chatId: chatId, content: sendform.content.value }, //body
         {
           //options
